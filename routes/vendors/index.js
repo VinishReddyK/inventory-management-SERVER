@@ -40,12 +40,13 @@ router.get("/vendors/details/:vendorId", (req, res) => {
 });
 
 router.post("/vendors/create", (req, res) => {
-  const { orgId, name, contact_name, contact_email, address, phone, notes } = req.body;
+  const { orgId, name, contact_name, contact_email, address, phone, previous_orders, notes } = req.body;
   const db = getDatabaseInstance(orgId);
 
-  const query = "INSERT INTO vendors (name, contact_name, contact_email, address, phone, notes) VALUES (?, ?, ?, ?, ?, ?)";
+  const query =
+    "INSERT INTO vendors (name, contact_name, contact_email, address, phone, previous_orders, notes) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-  db.run(query, [name, contact_name, contact_email, address, phone, notes], function (err) {
+  db.run(query, [name, contact_name, contact_email, address, phone, previous_orders, notes], function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -60,12 +61,12 @@ router.post("/vendors/create", (req, res) => {
 
 router.put("/vendors/edit/:vendorId", (req, res) => {
   const { vendorId } = req.params;
-  const { orgId, name, contact_name, contact_email, address, phone, notes } = req.body;
+  const { orgId, name, contact_name, contact_email, address, phone, previous_orders, notes } = req.body;
   const db = getDatabaseInstance(orgId);
 
-  const query = `UPDATE vendors SET name = ?, contact_name = ?, contact_email = ?, address = ?, phone = ?, notes = ? WHERE id = ?`;
+  const query = `UPDATE vendors SET name = ?, contact_name = ?, contact_email = ?, address = ?, phone = ?, previous_orders = ?, notes = ? WHERE id = ?`;
 
-  db.run(query, [name, contact_name, contact_email, address, phone, notes, vendorId], function (err) {
+  db.run(query, [name, contact_name, contact_email, address, phone, previous_orders, notes, vendorId], function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
       return;

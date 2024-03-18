@@ -29,7 +29,8 @@ const createOrganizationDatabase = (organizationId) => {
           name TEXT NOT NULL,
           description TEXT,
           price REAL,
-          quantity INTEGER,
+          sku TEXT,
+          stock INTEGER,
           last_modified DATETIME DEFAULT CURRENT_TIMESTAMP
         );`,
         `CREATE TABLE IF NOT EXISTS vendors (
@@ -39,6 +40,7 @@ const createOrganizationDatabase = (organizationId) => {
           contact_email TEXT,
           address TEXT,
           phone TEXT,
+          previous_orders INTEGER,
           notes TEXT
         );`,
         `CREATE TABLE IF NOT EXISTS customers (
@@ -48,6 +50,7 @@ const createOrganizationDatabase = (organizationId) => {
           contact_email TEXT,
           address TEXT,
           phone TEXT,
+          previous_orders INTEGER,
           notes TEXT
         );`,
         // Add more tables as needed

@@ -40,12 +40,12 @@ router.get("/items/details/:itemId", (req, res) => {
 });
 
 router.post("/items/create", (req, res) => {
-  const { orgId, name, description, price, quantity, last_modified } = req.body;
+  const { orgId, name, description, price, sku, stock, last_modified } = req.body;
   const db = getDatabaseInstance(orgId);
 
-  const query = "INSERT INTO items (name, description, price, quantity, last_modified) VALUES (?, ?, ?, ?, ?)";
+  const query = "INSERT INTO items (name, description, price, sku, stock, last_modified) VALUES (?, ?, ?, ?, ?, ?)";
 
-  db.run(query, [name, description, price, quantity, last_modified], function (err) {
+  db.run(query, [name, description, price, sku, stock, last_modified], function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
@@ -60,12 +60,12 @@ router.post("/items/create", (req, res) => {
 
 router.put("/items/edit/:itemId", (req, res) => {
   const { itemId } = req.params;
-  const { orgId, name, description, price, quantity, last_modified } = req.body;
+  const { orgId, name, description, price, sku, stock, last_modified } = req.body;
   const db = getDatabaseInstance(orgId);
 
-  const query = `UPDATE items SET name = ?, description = ?, price = ?, quantity = ?, last_modified = ? WHERE id = ?`;
+  const query = `UPDATE items SET name = ?, description = ?, price = ?, sku = ?, stock = ?, last_modified = ? WHERE id = ?`;
 
-  db.run(query, [name, description, price, quantity, last_modified, itemId], function (err) {
+  db.run(query, [name, description, price, sku, stock, last_modified, itemId], function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
       return;

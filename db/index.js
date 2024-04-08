@@ -47,6 +47,7 @@ const getDatabaseInstance = (name, mainPath = "org/") => {
       throw err;
     }
   });
+  orgDB.exec("PRAGMA foreign_keys = ON;");
   return orgDB;
 };
 

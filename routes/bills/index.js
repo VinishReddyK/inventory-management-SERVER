@@ -49,7 +49,7 @@ router.post("/bills/create", (req, res) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({ message: "Bill created successfully", id: this.lastID });
+      res.json({ message: "Bill created successfully", id: this.lastID, amount_due });
     });
   });
 });
@@ -73,7 +73,7 @@ router.put("/bills/:billId", (req, res) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({ message: "Bill updated successfully" });
+      res.json({ message: "Bill updated successfully", amount_due });
     });
   });
 });

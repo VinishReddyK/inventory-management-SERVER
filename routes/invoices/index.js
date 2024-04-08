@@ -50,7 +50,7 @@ router.post("/invoices/create", (req, res) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({ message: "Invoice created successfully", id: this.lastID });
+      res.json({ message: "Invoice created successfully", id: this.lastID, amount_due });
     });
   });
 });
@@ -74,7 +74,7 @@ router.put("/invoices/:invoiceId", (req, res) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({ message: "Invoice updated successfully" });
+      res.json({ message: "Invoice updated successfully", amount_due });
     });
   });
 });

@@ -58,7 +58,7 @@ router.post("/invoices/create", (req, res) => {
 // Update an existing invoice with recalculated amount_due
 router.put("/invoices/:invoiceId", (req, res) => {
   const { invoiceId } = req.params;
-  const { orgId, customer_id, sales_order_id, invoice_date, status, notes } = req.body;
+  const { orgId, sales_order_id, status, notes } = req.body;
   const db = getDatabaseInstance(orgId);
 
   db.all("SELECT quantity, price_at_sale FROM sales_orders_items WHERE sales_order_id = ?", [sales_order_id], (err, items) => {
@@ -68,8 +68,8 @@ router.put("/invoices/:invoiceId", (req, res) => {
     }
     const amount_due = items.reduce((acc, item) => acc + item.quantity * item.price_at_sale, 0);
 
-    const updateInvoice = `UPDATE invoices SET customer_id = ?, sales_order_id = ?, invoice_date = ?, amount_due = ?, status = ?, notes = ? WHERE id = ?`;
-    db.run(updateInvoice, [customer_id, sales_order_id, invoice_date, amount_due, status, notes, invoiceId], function (err) {
+    const updateInvoice = `UPDATE invoices SET status = ?, notes = ? WHERE id = ?`;
+    db.run(updateInvoice, [status, notes, invoiceId], function (err) {
       if (err) {
         res.status(500).json({ error: err.message });
         return;

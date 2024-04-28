@@ -57,7 +57,7 @@ router.post("/bills/create", (req, res) => {
 // Update an existing bill with recalculated amount_due
 router.put("/bills/:billId", (req, res) => {
   const { billId } = req.params;
-  const { orgId, vendor_id, purchase_order_id, bill_date, status, notes } = req.body;
+  const { orgId, purchase_order_id, status, notes } = req.body;
   const db = getDatabaseInstance(orgId);
 
   db.all("SELECT quantity, price_at_purchase FROM purchase_orders_items WHERE purchase_order_id = ?", [purchase_order_id], (err, items) => {
@@ -67,8 +67,8 @@ router.put("/bills/:billId", (req, res) => {
     }
     const amount_due = items.reduce((acc, item) => acc + item.quantity * item.price_at_purchase, 0);
 
-    const updateBill = `UPDATE bills SET vendor_id = ?, purchase_order_id = ?, bill_date = ?, amount_due = ?, status = ?, notes = ? WHERE id = ?`;
-    db.run(updateBill, [vendor_id, purchase_order_id, bill_date, amount_due, status, notes, billId], function (err) {
+    const updateBill = `UPDATE bills SET status = ?, notes = ? WHERE id = ?`;
+    db.run(updateBill, [status, notes, billId], function (err) {
       if (err) {
         res.status(500).json({ error: err.message });
         return;

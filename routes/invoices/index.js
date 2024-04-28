@@ -68,8 +68,8 @@ router.put("/invoices/:invoiceId", (req, res) => {
     }
     const amount_due = items.reduce((acc, item) => acc + item.quantity * item.price_at_sale, 0);
 
-    const updateInvoice = `UPDATE invoices SET status = ?, notes = ? WHERE id = ?`;
-    db.run(updateInvoice, [status, notes, invoiceId], function (err) {
+    const updateInvoice = `UPDATE invoices SET amount_due = ?, status = ?, notes = ? WHERE id = ?`;
+    db.run(updateInvoice, [amount_due, status, notes, invoiceId], function (err) {
       if (err) {
         res.status(500).json({ error: err.message });
         return;

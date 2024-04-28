@@ -67,8 +67,8 @@ router.put("/bills/:billId", (req, res) => {
     }
     const amount_due = items.reduce((acc, item) => acc + item.quantity * item.price_at_purchase, 0);
 
-    const updateBill = `UPDATE bills SET status = ?, notes = ? WHERE id = ?`;
-    db.run(updateBill, [status, notes, billId], function (err) {
+    const updateBill = `UPDATE bills SET amount_due = ?, status = ?, notes = ? WHERE id = ?`;
+    db.run(updateBill, [amount_due, status, notes, billId], function (err) {
       if (err) {
         res.status(500).json({ error: err.message });
         return;

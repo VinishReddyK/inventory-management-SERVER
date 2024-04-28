@@ -1,8 +1,9 @@
 const { router, getDatabaseInstance } = require("../requires");
 
 // GET: Fetch comprehensive statistics
-router.get("/stats/comprehensive", (req, res) => {
-  const { orgId } = req.query;
+router.get("/stats", (req, res) => {
+  const { orgId } = req.body;
+
   const db = getDatabaseInstance(orgId);
 
   const sql = `
@@ -22,7 +23,7 @@ router.get("/stats/comprehensive", (req, res) => {
       (SELECT COUNT(*) FROM sales_orders WHERE status <> 'Completed') AS incomplete_sales_orders,
       (SELECT COUNT(*) FROM purchase_orders WHERE status <> 'Completed') AS incomplete_purchase_orders,
       (SELECT SUM(amount_due) FROM invoices WHERE status = 'Paid') AS total_amount_paid,
-      (SELECT SUM(amount_due) FROM bills WHERE status <> 'Paid') AS total_amount_due
+      (SELECT SUM(amount_due) FROM invoices WHERE status <> 'Paid') AS total_amount_due
   `;
 
   db.get(sql, [], (err, stats) => {

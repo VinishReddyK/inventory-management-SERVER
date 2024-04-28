@@ -1,8 +1,8 @@
 const { router, getDatabaseInstance } = require("../requires");
 
 // GET: Read all item locations
-router.get("/item_locations", (req, res) => {
-  const { orgId } = req.query;
+router.get("/bin-locations", (req, res) => {
+  const { orgId } = req.body;
   const db = getDatabaseInstance(orgId);
   db.all("SELECT * FROM item_locations", [], (err, rows) => {
     if (err) {
@@ -17,7 +17,7 @@ router.get("/item_locations", (req, res) => {
 });
 
 // POST: Create a new item location
-router.post("/item_locations", (req, res) => {
+router.post("/bin-locations", (req, res) => {
   const { orgId, item_id, warehouse_id, bin_location } = req.body;
   const db = getDatabaseInstance(orgId);
   const sql = "INSERT INTO item_locations (item_id, warehouse_id, bin_location) VALUES (?, ?, ?)";
@@ -35,15 +35,16 @@ router.post("/item_locations", (req, res) => {
 });
 
 // PUT: Update an item location
-router.put("/item_locations", (req, res) => {
+router.put("/bin-locations/:id", (req, res) => {
+  const { id } = req.params;
   const { orgId, item_id, warehouse_id, bin_location } = req.body;
   const db = getDatabaseInstance(orgId);
   const sql = `
     UPDATE item_locations
     SET bin_location = ?
-    WHERE item_id = ? AND warehouse_id = ?
+    WHERE id = ?
   `;
-  const params = [bin_location, item_id, warehouse_id];
+  const params = [bin_location, id];
   db.run(sql, params, function (err) {
     if (err) {
       res.status(400).json({ error: err.message });
@@ -57,20 +58,17 @@ router.put("/item_locations", (req, res) => {
 });
 
 // DELETE: Delete an item location
-router.delete("/item_locations", (req, res) => {
-  const { orgId, item_id, warehouse_id, bin_location } = req.query;
+router.delete("/bin-locations/:id", (req, res) => {
+  const { id } = req.params;
+  const { orgId } = req.body;
   const db = getDatabaseInstance(orgId);
-  db.run(
-    "DELETE FROM item_locations WHERE item_id = ? AND warehouse_id = ? AND bin_location = ?",
-    [item_id, warehouse_id, bin_location],
-    function (err) {
-      if (err) {
-        res.status(400).json({ error: err.message });
-        return;
-      }
-      res.json({ message: "deleted", rows: this.changes });
+  db.run("DELETE FROM item_locations WHERE id = ?", [id], function (err) {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
     }
-  );
+    res.json({ message: "deleted", rows: this.changes });
+  });
 });
 
 module.exports = router;

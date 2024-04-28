@@ -9,6 +9,8 @@ const purchaseOrdersRoute = require("./routes/purchaseorders");
 const salesOrdersRoute = require("./routes/salesorders");
 const billsRoute = require("./routes/bills");
 const invoicesRoute = require("./routes/invoices");
+const warehousesRoute = require("./routes/warehouses");
+const binLocationsRoute = require("./routes/binlocations");
 const statsRoute = require("./routes/stats");
 
 // Auth
@@ -33,7 +35,19 @@ app.use("/auth", authRoutes);
 app.use(verifyToken);
 app.use(verifyOrgAccess);
 
-app.use("/", itemRoute, customersRoute, vendorsRoute, purchaseOrdersRoute, salesOrdersRoute, billsRoute, invoicesRoute, statsRoute);
+app.use(
+  "/",
+  itemRoute,
+  customersRoute,
+  vendorsRoute,
+  purchaseOrdersRoute,
+  salesOrdersRoute,
+  billsRoute,
+  invoicesRoute,
+  statsRoute,
+  warehousesRoute,
+  binLocationsRoute
+);
 
 // Listen on
 app.listen(port, () => {

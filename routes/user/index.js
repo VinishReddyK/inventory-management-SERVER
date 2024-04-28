@@ -112,15 +112,15 @@ const createOrganizationDatabase = (organizationId) => {
         `CREATE TABLE IF NOT EXISTS warehouses (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT NOT NULL,
-          address TEXT NOT NULL,
+          address TEXT NOT NULL
         );`,
         `CREATE TABLE IF NOT EXISTS item_locations (
-        item_id INTEGER NOT NULL,
-        warehouse_id INTEGER NOT NULL,
-        bin_location TEXT NOT NULL,
-        PRIMARY KEY (item_id, warehouse_id, bin_location),
-        FOREIGN KEY (item_id) REFERENCES items(id),
-        FOREIGN KEY (warehouse_id) REFERENCES warehouses(id)
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          item_id INTEGER NOT NULL,
+          warehouse_id INTEGER NOT NULL,
+          bin_location TEXT NOT NULL,
+          FOREIGN KEY (item_id) REFERENCES items(id),
+          FOREIGN KEY (warehouse_id) REFERENCES warehouses(id)
         );`,
       ];
 

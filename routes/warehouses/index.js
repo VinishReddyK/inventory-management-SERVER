@@ -2,7 +2,7 @@ const { router, getDatabaseInstance } = require("../requires");
 
 // GET: Read all warehouses
 router.get("/warehouses", (req, res) => {
-  const { orgId } = req.query;
+  const { orgId } = req.body;
   const db = getDatabaseInstance(orgId);
   db.all("SELECT * FROM warehouses", [], (err, rows) => {
     if (err) {
@@ -20,7 +20,7 @@ router.get("/warehouses", (req, res) => {
 router.post("/warehouses", (req, res) => {
   const { orgId, name, address } = req.body;
   const db = getDatabaseInstance(orgId);
-  const sql = "INSERT INTO warehouses (name, address) VALUES (?,?,?)";
+  const sql = "INSERT INTO warehouses (name, address) VALUES (?,?)";
   const params = [name, address];
   db.run(sql, params, function (err) {
     if (err) {
@@ -29,7 +29,7 @@ router.post("/warehouses", (req, res) => {
     }
     res.json({
       message: "success",
-      data: this.lastID,
+      id: this.lastID,
     });
   });
 });
@@ -58,7 +58,7 @@ router.put("/warehouses/:id", (req, res) => {
 
 // DELETE: Delete a warehouse
 router.delete("/warehouses/:id", (req, res) => {
-  const { orgId } = req.query;
+  const { orgId } = req.body;
   const db = getDatabaseInstance(orgId);
   db.run("DELETE FROM warehouses WHERE id = ?", req.params.id, function (err) {
     if (err) {

@@ -119,6 +119,7 @@ const createOrganizationDatabase = (organizationId) => {
           item_id INTEGER NOT NULL,
           warehouse_id INTEGER NOT NULL,
           bin_location TEXT NOT NULL,
+          stock INTEGER NOT NULL,
           FOREIGN KEY (item_id) REFERENCES items(id),
           FOREIGN KEY (warehouse_id) REFERENCES warehouses(id)
         );`,
